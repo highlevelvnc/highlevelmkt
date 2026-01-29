@@ -5,6 +5,8 @@ const HighLevelWebsite = () => {
   const [portfolioVisible, setPortfolioVisible] = useState(2);
   const [isLoading, setIsLoading] = useState(true);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [blogVisible, setBlogVisible] = useState(6);
+  const [currentPage, setCurrentPage] = useState('home'); // home, blog, portfolio
 
   // Loading Screen
   useEffect(() => {
@@ -44,12 +46,17 @@ const HighLevelWebsite = () => {
     setPortfolioVisible(prev => Math.min(prev + 2, 6));
   };
 
+  const loadMoreBlog = () => {
+    setBlogVisible(prev => Math.min(prev + 6, 26));
+  };
+
   const t = (pt, en) => currentLang === 'pt' ? pt : en;
 
   const portfolioCases = [
     {
       id: 1,
       emoji: '🦜',
+      logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/patabava.jpg',
       gradient: 'from-yellow-900/30 to-amber-900/30',
       category: t('Imobiliárias', 'Real Estate'),
       name: 'Patabrava Imobiliária',
@@ -69,6 +76,7 @@ const HighLevelWebsite = () => {
     {
       id: 2,
       emoji: '🎓',
+      logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/IGV.jpg',
       gradient: 'from-blue-900/30 to-indigo-900/30',
       category: t('Educação', 'Education'),
       name: 'Instituto Genária',
@@ -87,6 +95,7 @@ const HighLevelWebsite = () => {
     {
       id: 3,
       emoji: '🍽️',
+      logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/latinagrill.jpg',
       gradient: 'from-amber-900/30 to-orange-900/30',
       category: t('Restauração', 'Restaurants'),
       name: 'Latina Grill',
@@ -105,6 +114,7 @@ const HighLevelWebsite = () => {
     {
       id: 4,
       emoji: '💚',
+      logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/bemmaior.jpg',
       gradient: 'from-emerald-900/30 to-teal-900/30',
       category: t('Saúde', 'Healthcare'),
       name: 'Clínica Bem Maior',
@@ -123,6 +133,7 @@ const HighLevelWebsite = () => {
     {
       id: 5,
       emoji: '🦉',
+      logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/Unisuam.jpg',
       gradient: 'from-orange-900/30 to-blue-900/30',
       category: t('Educação Superior', 'Higher Education'),
       name: 'UNISUAM',
@@ -141,6 +152,7 @@ const HighLevelWebsite = () => {
     {
       id: 6,
       emoji: '🏘️',
+      logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/Luciacanelas.jpg',
       gradient: 'from-red-900/30 to-red-800/30',
       category: t('Imobiliárias', 'Real Estate'),
       name: 'Lúcia Canelas',
@@ -288,16 +300,16 @@ const HighLevelWebsite = () => {
   ];
 
   const clients = [
-    { emoji: '🦜', gradient: 'from-yellow-600 to-amber-700' },
-    { emoji: '🎓', gradient: 'from-blue-600 to-indigo-600' },
-    { emoji: '🍽️', gradient: 'from-amber-600 to-orange-600' },
-    { emoji: '💚', gradient: 'from-emerald-600 to-teal-600' },
-    { emoji: '🦉', gradient: 'from-orange-500 to-blue-600' },
-    { emoji: '🏘️', gradient: 'from-red-600 to-red-700' },
-    { emoji: '🎵', gradient: 'from-purple-600 to-pink-600' },
-    { emoji: '🐾', gradient: 'from-green-600 to-emerald-600' },
-    { emoji: '🧹', gradient: 'from-blue-600 to-cyan-600' },
-    { emoji: '🚗', gradient: 'from-red-600 to-gray-800' }
+    { name: 'Patabrava', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/patabava.jpg' },
+    { name: 'Instituto Genária', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/IGV.jpg' },
+    { name: 'Latina Grill', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/latinagrill.jpg' },
+    { name: 'Clínica Bem Maior', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/bemmaior.jpg' },
+    { name: 'UNISUAM', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/Unisuam.jpg' },
+    { name: 'Lúcia Canelas', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/Luciacanelas.jpg' },
+    { name: 'Vet Palmeiras', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/Vetpalmeiras.jpg' },
+    { name: 'Rota 106', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/Rota106.jpg' },
+    { name: 'TX Multimarcas', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/txmultimarcas.jpg' },
+    { name: 'ILV', logo: 'https://raw.githubusercontent.com/highlevelvnc/highlevelmkt/main/src/ILV.jpg' }
   ];
 
   return (
@@ -709,9 +721,13 @@ const HighLevelWebsite = () => {
                 {[...clients, ...clients].map((client, index) => (
                   <div 
                     key={index}
-                    className={`w-32 h-32 rounded-xl bg-gradient-to-br ${client.gradient} flex items-center justify-center text-5xl flex-shrink-0 shadow-2xl`}
+                    className="w-32 h-32 rounded-xl bg-white/10 backdrop-blur-lg flex items-center justify-center flex-shrink-0 shadow-2xl p-4"
                   >
-                    {client.emoji}
+                    <img 
+                      src={client.logo} 
+                      alt={client.name}
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                 ))}
               </div>
@@ -738,8 +754,16 @@ const HighLevelWebsite = () => {
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               {portfolioCases.slice(0, portfolioVisible).map((caseItem) => (
                 <div key={caseItem.id} className="gradient-border rounded-3xl overflow-hidden card-premium">
-                  <div className={`h-64 bg-gradient-to-br ${caseItem.gradient} flex items-center justify-center`}>
-                    <span className="text-9xl">{caseItem.emoji}</span>
+                  <div className={`h-64 bg-gradient-to-br ${caseItem.gradient} flex items-center justify-center p-8`}>
+                    {caseItem.logo ? (
+                      <img 
+                        src={caseItem.logo} 
+                        alt={caseItem.name}
+                        className="w-full h-full object-contain filter drop-shadow-2xl"
+                      />
+                    ) : (
+                      <span className="text-9xl">{caseItem.emoji}</span>
+                    )}
                   </div>
                   <div className="p-8 bg-gradient-to-b from-gray-900 to-black">
                     <div className="flex flex-wrap gap-2 mb-4">
